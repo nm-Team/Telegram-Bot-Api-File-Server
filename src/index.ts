@@ -11,8 +11,14 @@ app.get('/', (req, res) => {
     res.send('OK');
 });
 
-// match regexp /bot12345:Xxxxm22r23f23fxx/
+// match regexp
 app.get(/\/bot\d+:[\w\d]+/, (req, res) => {
+    // deny accessing td.binlog
+    if (req.url.includes('td.binlog')) {
+        res.status(403).send('Access denied');
+        return;
+    }
+
     // get file
     const filePath = `${env.binPath}/${req.url.substring(4)}`;
 
